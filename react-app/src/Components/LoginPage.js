@@ -79,7 +79,6 @@ function LoginPage() {
         } else if (formData.userId.length === 7) {
           navigate("/faculty", { state: {formData} });
         } else if (formData.userId.length === 8) {
-          console.log(formData.userId);
           navigate("/student", { state: {formData} });
         }
         // else {
@@ -89,7 +88,13 @@ function LoginPage() {
         response.status === 401 ? window.alert("Ensure user Details") : window.alert("Reloaad the page");
       }
     } catch (error) {
-      window.alert("Ensure user Details");
+      if (error.response && error.response.status === 400) {
+        window.alert("Captcha Server Error");
+      }else if(error.response && error.response.status === 401){
+        window.alert("Ensure user Details")
+      } else {
+        window.alert("An error occurred during login. Please try again.");
+      }
       console.error("Error during login:", error);
     }
   };

@@ -27,7 +27,7 @@ exp.get("/hod/getHodData", async (req, res) => {
       .storage()
       .bucket()
       .file(filePath);
-    const [url] = await fileRef.getSignedUrl({ action: "read", expires: expirationTime });
+    const [url] = await fileRef.getSignedUrl({ action: "read", expires: new Date(Date.now() + 5 * 60 * 1000) });
     hodData = { ...hodData, hodImgUrl: url };
 
     res.status(200).send(hodData);
