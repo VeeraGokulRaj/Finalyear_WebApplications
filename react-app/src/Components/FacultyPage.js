@@ -3,6 +3,7 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import RecordsFetchTabel from "./RecordsFetchTabel";
 import RequestFetchTabel from "./RequestFetchTabel";
+import UnusualStudentsTabel from "./UnusualStudentsTabel";
 
 function FacultyPage() {
   //extracting the users ID
@@ -14,13 +15,16 @@ function FacultyPage() {
   const [studentSeekedListData, setStudentSeekedListData] = useState([]);
   const [studentCurrentRequestData, setStudentCurrentRequestData] = useState([]);
   const [studentHistoryRequestData, setStudentHistoryRequestData] = useState([]);
+  const [unusualSeekedStudentsdata, setUnusualSeekedStudentsdata] = useState([]);
   const [booleans, setBooleans] = useState({
     recordShow: false,
     isEmpty: false, //seeked student data
     currentRequestIsEmpty: false,
     currentRequestShow: false,
     historyRequestIsEmpty: false,
-    historyRequestShow: false
+    historyRequestShow: false,
+    showUnusualSeekedStudents: false,
+    unusualSeekedStudentsIsEmpty: false
   });
 
   //Get the Faculty Data
@@ -52,7 +56,7 @@ function FacultyPage() {
       if (response.data.length === 0) {
         setBooleans(prevData => ({
           ...prevData,
-          isEmpty: !prevData.isEmpty
+          isEmpty: true
         }));
         return;
       }
@@ -76,7 +80,7 @@ function FacultyPage() {
       if (response.data.length === 0) {
         setBooleans(prevData => ({
           ...prevData,
-          currentRequestIsEmpty: !prevData.currentRequestIsEmpty
+          unusualSeekedStudentsIsEmpty: true
         }));
         return;
       }
@@ -100,7 +104,7 @@ function FacultyPage() {
       if (response.data.length === 0) {
         setBooleans(prevData => ({
           ...prevData,
-          historyRequestIsEmpty: !prevData.historyRequestIsEmpty
+          historyRequestIsEmpty: true
         }));
         return;
       }
@@ -108,6 +112,29 @@ function FacultyPage() {
       setBooleans(prevData => ({
         ...prevData,
         historyRequestShow: !prevData.historyRequestShow
+      }));
+    } catch (error) {
+      console.log("Error in fetching Data", error);
+    }
+  }
+
+  // getting tt Unusual Seeked Students
+  async function getUnusualSeekedStudents() {
+    // console.log("getUnusualSeekedStudents");
+    try {
+      const response = await axios.get("http://localhost:8002/faculty/getUnusualSeekedStudents");
+      // console.log(response.data);
+      if (response.data.length === 0) {
+        setBooleans(prevData => ({
+          ...prevData,
+          unusualSeekedStudentsIsEmpty: true
+        }));
+        return;
+      }
+      setUnusualSeekedStudentsdata(response.data);
+      setBooleans(prevData => ({
+        ...prevData,
+        showUnusualSeekedStudents: !prevData.showUnusualSeekedStudents
       }));
     } catch (error) {
       console.log("Error in fetching Data", error);
@@ -167,6 +194,13 @@ function FacultyPage() {
         {booleans.historyRequestShow && (
           <RequestFetchTabel data={studentHistoryRequestData} id={facultyId} historyRequestShow={booleans.historyRequestShow} />
         )}
+      </section>
+
+      {/* Unusual Seeked Students */}
+      <section>
+        <button onClick={getUnusualSeekedStudents}>Unusual Seeked students</button>
+        {booleans.unusualSeekedStudentsIsEmpty && <h2>No recoed found</h2>}
+        {booleans.showUnusualSeekedStudents && <UnusualStudentsTabel data = {unusualSeekedStudentsdata}/>}
       </section>
     </div>
   );

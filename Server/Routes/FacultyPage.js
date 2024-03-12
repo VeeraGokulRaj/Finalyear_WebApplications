@@ -4,6 +4,7 @@ const axios = require("axios");
 const bodyparser = require("body-parser");
 const cors = require("cors");
 const admin = require("./Firebase"); // Import the firebase Admin
+const getUnusualSeekedStudents = require("./FetchUnusualSeekedStudentsCHECK");
 
 exp.use(cors());
 exp.use(bodyparser.json());
@@ -316,7 +317,7 @@ exp.put("/faculty/requestAccept", async (req, res) => {
       .ref(`/Students/${regno}/numberOf_time_seeked`)
       .once("value");
     currentLastSeeked = currentLastSeeked.val();
-    console.log(currentLastSeeked);
+    // console.log(currentLastSeeked);
     const updatedSeekedValue = Number(currentLastSeeked) - filteredArray.length;
 
     // Update the database with the updatedSeekedValue
@@ -353,7 +354,7 @@ exp.put("/faculty/requestAccept", async (req, res) => {
         const [exists] = await fileRef.exists();
         if (exists) {
           await fileRef.delete();
-          console.log(`File deleted: ${fileName}`);
+          // console.log(`File deleted: ${fileName}`);
         } else {
           console.error(`File does not exist: ${fileName}`);
         }
@@ -362,6 +363,41 @@ exp.put("/faculty/requestAccept", async (req, res) => {
     res.status(200).send(true);
   } catch (error) {
     console.error("Failed to Accept the request", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+// unusual students data
+exp.get("/faculty/getUnusualSeekedStudents", async (req, res) => {
+  const folderName = "UnusualSeekedStudentsCHECK/";
+  try {
+    const unusualSeededData = await getUnusualSeekedStudents(folderName);
+    // console.log(unusualSeededData);
+    res.status(200).send(unusualSeededData);
+  } catch (error) {
+    console.log("Error in fetching Data Unusual students data", error);
+  }
+});
+
+// remove Unusual students
+exp.put("/faculty/removeUnusualSeekedStudent", async (req, res) => {
+  const { filename } = req.body.data;
+  // console.log(filename);
+  try {
+    const fileRef = admin
+      .storage()
+      .bucket()
+      .file(`UnusualSeekedStudentsCHECK/${filename}`);
+    const [exists] = await fileRef.exists();
+    if (exists) {
+      await fileRef.delete();
+      // console.log(`File deleted: ${fileName}`);
+    } else {
+      console.error(`File does not exist: ${filename}`);
+    }
+    res.status(200).send(true);
+  } catch (error) {
+    console.log(error);
     res.status(500).send("Internal Server Error");
   }
 });

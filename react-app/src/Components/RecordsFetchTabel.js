@@ -1,6 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 function StudentRecordTable(props) {
+  const [booleans, setBooleans] = useState({
+    hodId: false
+  });
+  useEffect(
+    () => {
+      // console.log(props);
+      if (props.id && props.id.length === 5) {
+        setBooleans(prevData => ({ ...prevData, hodId: true }));
+      }
+    },
+    [props.id]
+  );
+  // remove the student
+  async function removeStudent(studentData) {
+    try {
+      const response = await axios.put("http://localhost:8003/hod/removeStudent", {
+        studentData: studentData,
+        hodId: props.id
+      });
+      // console.log(response.data);
+      if (response.data) {
+        window.alert("Data Removed");
+      }
+    } catch (error) {
+      console.log("Error in removing the student");
+    }
+    // console.log(studentData);
+  }
   return (
     <table style={{ borderCollapse: "collapse", margin: "auto", width: "70%", marginTop: "1.5rem" }}>
       <thead>
@@ -12,6 +41,7 @@ function StudentRecordTable(props) {
           <th style={tableHeaderCellStyle}>Department</th>
           <th style={tableHeaderCellStyle}>Seeked-Date & Time</th>
           <th style={tableHeaderCellStyle}>Image</th>
+          {booleans.hodId && <th style={tableHeaderCellStyle}>Remove</th>}
         </tr>
       </thead>
       <tbody>
@@ -30,6 +60,11 @@ function StudentRecordTable(props) {
                 alt={`${data.name} ${data.last_seeked} Seeked Img`}
               />
             </td>
+            {booleans.hodId && (
+              <td style={tableCellStyle} onClick={() => removeStudent(data)}>
+                Remove
+              </td>
+            )}
           </tr>
         ))}
       </tbody>
