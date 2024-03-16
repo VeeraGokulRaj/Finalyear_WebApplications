@@ -65,8 +65,8 @@ exp.get("/principal/getItData", async (req, res) => {
           (selectFormData.secondYearSectionB && data.year === "II" && data.section === "B") ||
           (selectFormData.thirdYearSectionA && data.year === "III" && data.section === "A") ||
           (selectFormData.thirdYearSectionB && data.year === "III" && data.section === "B") ||
-          (selectFormData.finalYearSectionA && data.year === "VI" && data.section === "A") ||
-          (selectFormData.finalYearSectionB && data.year === "VI" && data.section === "B")
+          (selectFormData.finalYearSectionA && data.year === "IV" && data.section === "A") ||
+          (selectFormData.finalYearSectionB && data.year === "IV" && data.section === "B")
         ) {
           return true; // Include in resultArray
         }
@@ -135,8 +135,8 @@ exp.get("/principal/getCseData", async (req, res) => {
           (selectFormData.secondYearSectionB && data.year === "II" && data.section === "B") ||
           (selectFormData.thirdYearSectionA && data.year === "III" && data.section === "A") ||
           (selectFormData.thirdYearSectionB && data.year === "III" && data.section === "B") ||
-          (selectFormData.finalYearSectionA && data.year === "VI" && data.section === "A") ||
-          (selectFormData.finalYearSectionB && data.year === "VI" && data.section === "B")
+          (selectFormData.finalYearSectionA && data.year === "IV" && data.section === "A") ||
+          (selectFormData.finalYearSectionB && data.year === "IV" && data.section === "B")
         ) {
           return true; // Include in resultArray
         }

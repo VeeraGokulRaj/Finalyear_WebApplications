@@ -49,7 +49,7 @@ async function checkImgExists(filename) {
     .then(exists => exists[0]);
 }
 
-// getting seeled students data
+// getting selected students data
 exp.get("/hod/getData", async (req, res) => {
   // parsing the data
   const selectFormData = {
@@ -76,8 +76,8 @@ exp.get("/hod/getData", async (req, res) => {
           (selectFormData.secondYearSectionB && data.year === "II" && data.section === "B") ||
           (selectFormData.thirdYearSectionA && data.year === "III" && data.section === "A") ||
           (selectFormData.thirdYearSectionB && data.year === "III" && data.section === "B") ||
-          (selectFormData.finalYearSectionA && data.year === "VI" && data.section === "A") ||
-          (selectFormData.finalYearSectionB && data.year === "VI" && data.section === "B")
+          (selectFormData.finalYearSectionA && data.year === "IV" && data.section === "A") ||
+          (selectFormData.finalYearSectionB && data.year === "IV" && data.section === "B")
         ) {
           return true; // Include in resultArray
         }
@@ -183,7 +183,7 @@ exp.put("/hod/removeStudent", async (req, res) => {
         .ref(`/SeekedStudents/${fileName}`)
         .remove()
         .catch(error => console.error("Error deleting record from database:", error)),
-    
+
       // Delete file from storage
       (async () => {
         const fileRef = admin
@@ -199,13 +199,193 @@ exp.put("/hod/removeStudent", async (req, res) => {
           console.error(`File does not exist: ${fileName}`);
         }
       })()
-    ]);    
+    ]);
     // await Promise.all();
     res.status(200).send(true);
   } catch (error) {
     console.error("Failed to Remove the Student", error);
     res.status(500).send("Internal Server Error");
   }
+});
+
+// Getting current day
+function currentDateGenerator() {
+  var currentDate = new Date();
+
+  var currentYear = currentDate.getFullYear();
+  var currentMonth = currentDate.getMonth() + 1;
+  var currentDay = currentDate.getDate();
+  // ensure the date is match with the dat in db
+  currentDay += "";
+  currentMonth += "";
+  if (currentMonth.length === 1) {
+    currentMonth = "0" + currentMonth;
+  }
+  if (currentDay.length === 1) {
+    currentDay = "0" + currentDay;
+  }
+  return currentYear + "-" + currentMonth + "-" + currentDay;
+}
+
+// function to check the time interval
+function isTimeInInterval(checkTime, startTime, endTime) {
+  const checkDateTime = new Date(`2000-01-01 ${checkTime}`);
+  const startDateTime = new Date(`2000-01-01 ${startTime}`);
+  const endDateTime = new Date(`2000-01-01 ${endTime}`);
+
+  return checkDateTime >= startDateTime && checkDateTime <= endDateTime;
+}
+
+// Alter time
+exp.put("/hod/setTime", async (req, res) => {
+  const records = {
+    firstYearSectionA: JSON.parse(req.body.params.data.firstYearSectionA),
+    firstYearSectionB: JSON.parse(req.body.params.data.firstYearSectionB),
+    secondYearSectionA: JSON.parse(req.body.params.data.secondYearSectionA),
+    secondYearSectionB: JSON.parse(req.body.params.data.secondYearSectionB),
+    thirdYearSectionA: JSON.parse(req.body.params.data.thirdYearSectionA),
+    thirdYearSectionB: JSON.parse(req.body.params.data.thirdYearSectionB),
+    finalYearSectionA: JSON.parse(req.body.params.data.finalYearSectionA),
+    finalYearSectionB: JSON.parse(req.body.params.data.finalYearSectionB),
+    startTime: req.body.params.data.startTime,
+    endTime: req.body.params.data.endTime
+  };
+  const { hodId } = req.body.params;
+  const currentDate = currentDateGenerator();
+  // fetching all the dat in the data base
+  const allData = await FetchData(hodId);
+  var dataToRemove = [];
+
+  // fetching the required daata in the given interval of time and selected section
+  allData.forEach(data => {
+    // getting the time of the last seeked students
+    const lastSeekedInfo = data.last_seeked.split(" ");
+    const lastSeeked = lastSeekedInfo[1];
+    if (
+      records.firstYearSectionA &&
+      data.year === "I" &&
+      data.section === "A" &&
+      data.fileName.includes(currentDate) &&
+      isTimeInInterval(lastSeeked, records.startTime, records.endTime)
+    ) {
+      dataToRemove.push(data);
+    }
+    if (
+      records.firstYearSectionB &&
+      data.year === "I" &&
+      data.section === "B" &&
+      data.fileName.includes(currentDate) &&
+      isTimeInInterval(lastSeeked, records.startTime, records.endTime)
+    ) {
+      dataToRemove.push(data);
+    }
+    if (
+      records.secondYearSectionA &&
+      data.year === "II" &&
+      data.section === "A" &&
+      data.fileName.includes(currentDate) &&
+      isTimeInInterval(lastSeeked, records.startTime, records.endTime)
+    ) {
+      dataToRemove.push(data);
+    }
+    if (
+      records.secondYearSectionB &&
+      data.year === "II" &&
+      data.section === "B" &&
+      data.fileName.includes(currentDate) &&
+      isTimeInInterval(lastSeeked, records.startTime, records.endTime)
+    ) {
+      dataToRemove.push(data);
+    }
+    if (
+      records.thirdYearSectionA &&
+      data.year === "III" &&
+      data.section === "A" &&
+      data.fileName.includes(currentDate) &&
+      isTimeInInterval(lastSeeked, records.startTime, records.endTime)
+    ) {
+      dataToRemove.push(data);
+    }
+    if (
+      records.thirdYearSectionB &&
+      data.year === "III" &&
+      data.section === "B" &&
+      data.fileName.includes(currentDate) &&
+      isTimeInInterval(lastSeeked, records.startTime, records.endTime)
+    ) {
+      dataToRemove.push(data);
+    }
+    if (
+      records.finalYearSectionA &&
+      data.year === "IV" &&
+      data.section === "A" &&
+      data.fileName.includes(currentDate) &&
+      isTimeInInterval(lastSeeked, records.startTime, records.endTime)
+    ) {
+      dataToRemove.push(data);
+    }
+    if (
+      records.finalYearSectionB &&
+      data.year === "IV" &&
+      data.section === "B" &&
+      data.fileName.includes(currentDate) &&
+      isTimeInInterval(lastSeeked, records.startTime, records.endTime)
+    ) {
+      dataToRemove.push(data);
+    }
+  });
+
+  if (dataToRemove.length !== 0) {
+    // updating the last seeked
+    dataToRemove.forEach(async data => {
+      const studentFileSplit = data.fileName.split("_");
+      const regno = studentFileSplit[0];
+
+      var currentLastSeeked = await admin //current seeked value
+        .database()
+        .ref(`/Students/${regno}/numberOf_time_seeked`)
+        .once("value");
+      currentLastSeeked = currentLastSeeked.val();
+      // console.log(currentLastSeeked);
+      const updatedSeekedValue = Number(currentLastSeeked) - 1;
+
+      // Update the database with the updatedSeekedValue
+      await admin
+        .database()
+        .ref(`/Students/${regno}`)
+        .update({ numberOf_time_seeked: updatedSeekedValue });
+
+      // Delete record from database and storage
+      const fileName = data.fileName;
+
+      // Delete record seeked Students
+      await admin
+        .database()
+        .ref(`/SeekedStudents/${fileName}`)
+        .remove()
+        .catch(error => console.error("Error deleting record from database:", error));
+
+      // Delete file from storage
+      const fileRef = admin
+        .storage()
+        .bucket()
+        .file(`SeekedStudents/${fileName}.jpg`);
+      // await fileRef.delete();
+      const [exists] = await fileRef.exists();
+      if (exists) {
+        await fileRef.delete();
+        // console.log(`File deleted: ${fileName}`);
+      } else {
+        console.error(`File does not exist: ${fileName}`);
+      }
+    });
+    res.status(200).send("Seeked updated");
+  } else {
+    res.status(200).send(false);
+  }
+
+  console.log(dataToRemove);
+  // res.status(200).send(dataToRemove);
 });
 
 exp.listen(8003, () => {

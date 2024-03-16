@@ -20,6 +20,19 @@ function HodPage() {
     finalYearSectionA: false,
     finalYearSectionB: false
   });
+  const [timeAlter, setTimeAlter] = useState({
+    startTime: "",
+    endTime: "",
+    firstYearSectionA: false,
+    firstYearSectionB: false,
+    secondYearSectionA: false,
+    secondYearSectionB: false,
+    thirdYearSectionA: false,
+    thirdYearSectionB: false,
+    finalYearSectionA: false,
+    finalYearSectionB: false,
+    showAlterTimeForm: false
+  });
   const [findByRegno, setFindByRegno] = useState({ regno: "" });
   const [selectedSeekedStudents, setSelectedSeekedStudents] = useState([]);
   const [unusualSeekedStudentsdata, setUnusualSeekedStudentsdata] = useState([]);
@@ -43,6 +56,17 @@ function HodPage() {
       };
     });
     // console.log(selectFormData);
+  }
+  //Setting data to Time Alter state
+  function timeAlterChange(event) {
+    const { name, value, type, checked } = event.target;
+    setTimeAlter(prevData => {
+      return {
+        ...prevData,
+        [name]: type === "checkbox" ? checked : value
+      };
+    });
+    // console.log(timeAlter);
   }
 
   useEffect(
@@ -155,6 +179,45 @@ function HodPage() {
       }));
     } catch (error) {
       console.log("Error in fetching Data", error);
+    }
+  }
+
+  // Alter time for boolean value
+  function alterTime() {
+    setTimeAlter(prevData => ({ ...prevData, showAlterTimeForm: !prevData.showAlterTimeForm }));
+    console.log(timeAlter.showAlterTimeForm);
+  }
+
+  // delete the student data in the given interval of time
+
+  async function setTime(event) {
+    event.preventDefault();
+    try {
+      if (
+        (timeAlter.firstYearSectionA ||
+          timeAlter.firstYearSectionB ||
+          timeAlter.secondYearSectionA ||
+          timeAlter.secondYearSectionB ||
+          timeAlter.thirdYearSectionA ||
+          timeAlter.thirdYearSectionB ||
+          timeAlter.finalYearSectionA ||
+          timeAlter.finalYearSectionB) &&
+        (timeAlter.startTime != "" && timeAlter.endTime != "")
+      ) {
+        const response = await axios.put("http://localhost:8003/hod/setTime", {
+          params: { data: timeAlter, hodId: hodId }
+        });
+        // console.log(response.data);
+        if (response.data) {
+          window.alert("Data Removed");
+        } else {
+          window.alert("No data found");
+        }
+      } else {
+        window.alert("Ensure user details");
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
   return (
@@ -287,10 +350,102 @@ function HodPage() {
         <br />
         {/* Unusual Seeked Students */}
         <section>
-        <button onClick={getUnusualSeekedStudents}>Unusual Seeked students</button>
-        {booleans.unusualSeekedStudentsIsEmpty && <h2>No recoed found</h2>}
-        {booleans.showUnusualSeekedStudents && <UnusualStudentsTabel data = {unusualSeekedStudentsdata}/>}
-      </section>
+          <button onClick={getUnusualSeekedStudents}>Unusual Seeked students</button>
+          {booleans.unusualSeekedStudentsIsEmpty && <h2>No recoed found</h2>}
+          {booleans.showUnusualSeekedStudents && <UnusualStudentsTabel data={unusualSeekedStudentsdata} />}
+        </section>
+      </div>
+      <div>
+        <button onClick={alterTime}>Alter Time</button>
+        {timeAlter.showAlterTimeForm && (
+          <section>
+            <form className="request-form">
+              <label htmlFor="TimeAlterFirstYearA">FirstYear A:</label>
+              <input
+                type="checkbox"
+                checked={timeAlter.firstYearSectionA}
+                onChange={timeAlterChange}
+                id="TimeAlterFirstYearA"
+                name="firstYearSectionA"
+              />
+
+              <label htmlFor="TimeAlterFirstYearB">FirstYear B:</label>
+              <input
+                type="checkbox"
+                checked={timeAlter.firstYearSectionB}
+                onChange={timeAlterChange}
+                id="TimeAlterFirstYearB"
+                name="firstYearSectionB"
+              />
+
+              <label htmlFor="TimeAlterSecondYearA">SecondYear A:</label>
+              <input
+                type="checkbox"
+                checked={timeAlter.secondYearSectionA}
+                onChange={timeAlterChange}
+                id="TimeAlterSecondYearA"
+                name="secondYearSectionA"
+              />
+              <label htmlFor="TimeAlterSecondYearB">SecondYear B:</label>
+              <input
+                type="checkbox"
+                checked={timeAlter.secondYearSectionB}
+                onChange={timeAlterChange}
+                id="TimeAlterSecondYearB"
+                name="secondYearSectionB"
+              />
+              <label htmlFor="TimeAlterThirdYearA">ThirdYear A:</label>
+              <input
+                type="checkbox"
+                checked={timeAlter.thirdYearSectionA}
+                onChange={timeAlterChange}
+                id="TimeAlterThirdYearA"
+                name="thirdYearSectionA"
+              />
+              <label htmlFor="TimeAlterThirdYearB">ThirdYear B:</label>
+              <input
+                type="checkbox"
+                checked={timeAlter.thirdYearSectionB}
+                onChange={timeAlterChange}
+                id="TimeAlterThirdYearB"
+                name="thirdYearSectionB"
+              />
+              <label htmlFor="TimeAlterFinalYearA">FinalYear A:</label>
+              <input
+                type="checkbox"
+                checked={timeAlter.finalYearSectionA}
+                onChange={timeAlterChange}
+                id="TimeAlterFinalYearA"
+                name="finalYearSectionA"
+              />
+              <label htmlFor="TimeAlterFinalYearB">FinalYear B:</label>
+              <input
+                type="checkbox"
+                checked={timeAlter.finalYearSectionB}
+                onChange={timeAlterChange}
+                id="TimeAlterFinalYearB"
+                name="finalYearSectionB"
+              />
+              <input
+                type="time"
+                placeholder="Start Time"
+                required
+                name="startTime"
+                onChange={timeAlterChange}
+                value={timeAlter.startTime}
+              />
+              <input
+                type="time"
+                placeholder="End time"
+                required
+                name="endTime"
+                onChange={timeAlterChange}
+                value={timeAlter.endTime}
+              />
+              <button onClick={setTime}>Proceed</button>
+            </form>
+          </section>
+        )}
       </div>
     </div>
   );

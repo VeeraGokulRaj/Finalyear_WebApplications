@@ -243,6 +243,7 @@ function isTimeInInterval(checkTime, startTime, endTime) {
 
   return checkDateTime >= startDateTime && checkDateTime <= endDateTime;
 }
+
 // Accepting the request
 exp.put("/faculty/requestAccept", async (req, res) => {
   const { regno, date, startTime, endTime } = req.body;
