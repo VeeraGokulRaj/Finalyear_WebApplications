@@ -154,7 +154,9 @@ function StudentPage() {
 
   return (
     <div className="studentPage">
-      <h1 style={{ marginBottom: "1.5rem" }}>Student Login</h1>
+      <h1 style={{ marginBottom: "1.5rem" }} className="text-3xl font-bold underline">
+        Student Login
+      </h1>
       {studentData && (
         <section className="student-container" style={{ width: "100%", display: "flex", justifyContent: "center" }}>
           <div className="student-content">
@@ -248,7 +250,7 @@ function StudentPage() {
       <section>
         <button onClick={getStudentRequestRecord}>Check status</button>
         {booleans.requestIsEmpty && <h2>No RecordFound!!</h2>}
-        {booleans.requestShow && <RequestFetchTabel data={studentRequestData} id = {studentId}/>}
+        {booleans.requestShow && <RequestFetchTabel data={studentRequestData} id={studentId} />}
       </section>
     </div>
   );
