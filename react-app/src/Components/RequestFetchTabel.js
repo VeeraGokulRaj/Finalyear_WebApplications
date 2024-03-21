@@ -32,8 +32,8 @@ function RequestFetchTabel(props) {
         endTime: endTime
       });
       // console.log(response.data);
-      if(response.data){
-        window.alert("Requested Accepted")
+      if (response.data) {
+        window.alert("Requested Accepted");
       }
     } catch (error) {
       console.log("Error in rejecting request", error);
@@ -60,21 +60,25 @@ function RequestFetchTabel(props) {
   }
 
   return (
-    <table style={{ borderCollapse: "collapse", margin: "auto", width, marginTop: "1.5rem" }}>
-      <thead>
-        <tr>
-          <th style={tableHeaderCellStyle}>Name</th>
-          <th style={tableHeaderCellStyle}>Regno</th>
-          <th style={tableHeaderCellStyle}>Reason</th>
-          <th style={tableHeaderCellStyle}>Date</th>
-          <th style={tableHeaderCellStyle}>Start Time</th>
-          <th style={tableHeaderCellStyle}>End Time</th>
+    <table className="w-11/12 table-auto text-extraSmall md:text-base md:w-full mx-auto md:table-auto text-slate-800 dark:text-slate-400">
+      {/*style={{ borderCollapse: "collapse", margin: "auto", width, marginTop: "1.5rem" }} */}
+      <thead className="">
+        <tr
+          className=" bg-blue-500 text-white p-2 border-blue-500 border-2 dark:bg-slate-500 dark:border-slate-500 
+        dark:text-slate-100 text-extraSmall font-medium md:text-basePlus "
+        >
+          <th className="p-0 md:p-2">Name</th>
+          <th className="p-0 md:p-2">Regno</th>
+          <th className="p-0 md:p-2">Reason</th>
+          <th className="p-0 md:p-2">Date</th>
+          <th className="p-0 md:p-2">Start Time</th>
+          <th className="p-0 md:p-2">End Time</th>
           {booleans.student || booleans.historyRequest ? (
-            <th style={tableHeaderCellStyle}>Status</th>
+            <th className="p-0 md:p-2">Status</th>
           ) : (
             <>
-              <th style={tableHeaderCellStyle}>Accept</th>
-              <th style={tableHeaderCellStyle}>Reject</th>
+              <th>Accept</th>
+              <th>Reject</th>
             </>
           )}
         </tr>
@@ -82,22 +86,28 @@ function RequestFetchTabel(props) {
       <tbody>
         {props.data.map((data, index) => (
           <tr key={index}>
-            <td style={tableCellStyle}>{data.name}</td>
-            <td style={tableCellStyle}>{data.regno}</td>
-            <td style={tableCellStyle}>{data.reason}</td>
-            <td style={tableCellStyle}>{data.date}</td>
-            <td style={tableCellStyle}>{data.startTime}</td>
-            <td style={tableCellStyle}>{data.endTime}</td>
+            <td className="p-0 md:p-2 border-gray-400 border-2 text-center">{data.name}</td>
+            <td className="p-0 md:p-2 border-gray-400 border-2 text-center">{data.regno}</td>
+            <td className="p-0 md:p-2 border-gray-400 border-2 text-center">{data.reason}</td>
+            <td className="p-0 md:p-2 border-gray-400 border-2 text-center">{data.date}</td>
+            <td className="p-0 md:p-2 border-gray-400 border-2 text-center">{data.startTime}</td>
+            <td className="p-0 md:p-2 border-gray-400 border-2 text-center">{data.endTime}</td>
             {booleans.student || booleans.historyRequest ? (
-              <td style={tableCellStyle}>{data.status}</td>
+              <td
+                className={`p-2 border-gray-400 border-2 text-center ${
+                  data.status === "Acceptede"
+                    ? "text-green-600"
+                    : data.status === "Rejected"
+                    ? "text-rose-600"
+                    : "text-orange-600"
+                }`}
+              >
+                {data.status}
+              </td>
             ) : (
               <>
-                <td style={tableCellStyle} onClick={() => requestAccept(data.regno, data.date, data.startTime, data.endTime)}>
-                  Accept
-                </td>
-                <td style={tableCellStyle} onClick={() => requestReject(data.regno, data.date, data.startTime, data.endTime)}>
-                  Reject
-                </td>
+                <td onClick={() => requestAccept(data.regno, data.date, data.startTime, data.endTime)}>Accept</td>
+                <td onClick={() => requestReject(data.regno, data.date, data.startTime, data.endTime)}>Reject</td>
               </>
             )}
           </tr>
@@ -107,14 +117,14 @@ function RequestFetchTabel(props) {
   );
 }
 
-const tableHeaderCellStyle = {
-  border: "1px solid #000",
-  padding: "5px",
-  backgroundColor: "#f2f2f2"
-};
+// const tableHeaderCellStyle = {
+//   border: "1px solid #000",
+//   padding: "5px",
+//   backgroundColor: "#f2f2f2"
+// };
 
-const tableCellStyle = {
-  border: "1px solid #000"
-};
+// const tableCellStyle = {
+//   border: "1px solid #000"
+// };
 
 export default RequestFetchTabel;

@@ -125,16 +125,16 @@ function LoginPage(props) {
 
   return (
     <>
-      <div className="w-4/5 mx-auto my-2  flex">
+      <div className="w-4/5 mx-auto my-2 flex pb-5 md:pb-0">
         <div className="hidden md:block md:w-1/2 h-full">
           <img className="max-h-full max-w-full my-9 m-auto" src="/Images/Login-page.jpg" alt="Login-Image" />
         </div>
-
-        <div className="w-full md:w-1/2 p-8 mt-5 my-auto rounded-lg h-full transition-all">
+        {/* Login form */}
+        <div className="w-full md:w-1/2  md:p-8 md:ml-5 mt-5  rounded-lg h-full transition-all">
           <h1 className="text-center pb-5 mb-4 border-b border-gray-300 dark:text-white text-blue-500 text-2xl font-semibold">
             Login Page
           </h1>
-          <form className=" px-10">
+          <form>
             <div
               className={`txt mb-8 relative border-b-2  ${
                 props.theme === "light" ? (idFocused ? "border-blue-500" : "border-gray-400") : "border-gray-400"
@@ -274,7 +274,7 @@ function LoginPage(props) {
               )}
             </section>
 
-            <section className="grid place-content-center">
+            <section className="w-9/12 mx-auto md:w-full grid place-content-center">
               <ReCAPTCHA
                 sitekey="6LdjOoQpAAAAAMRraSxhCQcThr_AoQ8GyFqsNqV0"
                 onChange={onRecaptchaChange}
