@@ -23,7 +23,10 @@ module.exports = {
         "15": "17.5%",
         "85": "82.5%",
         "200": "200%",
-        "16.6": "16.66%"
+        "16.6": "16.66%",
+        "30": "30%",
+        "70": "70%",
+        "27": "27%",
       },
       fontSize: {
         basePlus: "1.15rem",
@@ -36,7 +39,10 @@ module.exports = {
       borderRadius: {
         btr: "10px", // border-top-right-radius: 10px
         bbl: "10px" // border-bottom-left-radius: 10px
-      }
+      },
+      scale: {// Custom scale for flipping elements
+        'trash': '2',
+      },
     }
   },
   plugins: []

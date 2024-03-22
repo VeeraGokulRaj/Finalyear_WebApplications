@@ -43,18 +43,21 @@ function App() {
     <div className="App w-4/5 mx-auto shadow-x relative bg-white dark:bg-slate-800 ">
       <Router>
         {/* <Theme /> */}
-        <section className="absolute top-0 right-1 sm:top-2 sm:right-4 md:top-4 md:right-7 ">
-          <label className="inline-flex items-center  cursor-pointer ">
-            <span className="ms-3  text-sm font-medium mr-2 text-gray-900 ">
-              <BsBrightnessHigh className="w-4 h-4 md:w-5 md:h-5 dark:text-white" />
-            </span>
-            <input type="checkbox" name="theme" onChange={handelThemeChange} value="theme" className="sr-only peer" />
-            <div className="relative w-7 h-4 sm:w-9 sm:h-5 md:w-11 md:h-6 bg-gray-400   rounded-full peer  peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border  after:rounded-full after:h-3 after:w-3 sm:after:h-4 sm:after:w-4 md:after:h-5 md:after:w-5 after:transition-all  peer-checked:bg-blue-600 "/>
-            <span className="ms-3 text-sm font-medium ml-2 text-gray-900 ">
-              <IoMoon className="w-4 h-4 md:w-5 md:h-5 dark:text-white" />
-            </span>
-          </label>
-        </section>
+        <div className="z-20 sticky top-0">
+          <section className="absolute top-0 right-1 sm:top-2 sm:right-4 md:top-4 md:right-7 ">
+            <label className="inline-flex items-center  cursor-pointer ">
+              <span className="ms-3  text-sm font-medium mr-2 text-gray-900 ">
+                <BsBrightnessHigh className="w-4 h-4 md:w-5 md:h-5 dark:text-white" />
+              </span>
+              <input type="checkbox" name="theme" onChange={handelThemeChange} value="theme" className="sr-only peer" />
+              <div className="relative w-7 h-4 sm:w-9 sm:h-5 md:w-11 md:h-6 bg-gray-400   rounded-full peer  peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border  after:rounded-full after:h-3 after:w-3 sm:after:h-4 sm:after:w-4 md:after:h-5 md:after:w-5 after:transition-all  peer-checked:bg-blue-600 " />
+              <span className="ms-3 text-sm font-medium ml-2 text-gray-900 ">
+                <IoMoon className="w-4 h-4 md:w-5 md:h-5 dark:text-white" />
+              </span>
+            </label>
+          </section>
+        </div>
+
         <Routes>
           <Route path="/" element={<LoginPage theme={theme} />} />
           <Route path="/hod" element={<HodPage />} />

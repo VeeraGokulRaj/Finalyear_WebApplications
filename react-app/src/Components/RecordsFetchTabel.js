@@ -100,15 +100,6 @@ function StudentRecordTable(props) {
   );
 }
 
-const tableHeaderCellStyle = {
-  border: "1px solid #000",
-  padding: "5px",
-  backgroundColor: "#f2f2f2"
-};
 
-const tableCellStyle = {
-  border: "1px solid #000"
-  // padding: "3px",
-};
 
 export default StudentRecordTable;

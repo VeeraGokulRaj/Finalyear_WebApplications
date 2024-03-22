@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { RiDeleteBin6Line } from "react-icons/ri";
 import axios from "axios";
 
 function UnusualStudentsTabel(props) {
@@ -14,36 +15,39 @@ function UnusualStudentsTabel(props) {
       } else {
         window.alert("erroe in removing data");
       }
+      window.location.reload();
     } catch (error) {
       console.log("Error in removing the student", error);
     }
   }
 
   return (
-    <table style={{ borderCollapse: "collapse", margin: "auto", width: "25%", marginTop: "1.5rem" }}>
-      <thead>
-        <tr>
-          <th style={tableHeaderCellStyle}>Image</th>
-          <th style={tableHeaderCellStyle}>Remove</th>
-        </tr>
-      </thead>
-      <tbody>
-        {props.data.map((data, index) => (
-          <tr key={index}>
-            <td style={tableCellStyle}>
-              <img
-                src={data.url}
-                style={{ height: "100px", width: "100px", paddingTop: "5px" }}
-                alt={`${data.name} ${data.last_seeked} Seeked Img`}
-              />
-            </td>
-            <td style={tableCellStyle} onClick={() => removeUnusualSeekedStudent(data)}>
-              Remove
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div className=" flex flex-wrap justify-evenly ">
+      {props.data.map((data, index) => (
+        <div
+          key={index}
+          className="w-2/5 mx-auto h-16 text-xs sm:text-sm md:h-32 md:text-base  flex  shrink m-3 bg-slate-100 md:w-27 border-gray-300 border-2 rounded-tl-xl rounded-br-xl transform transition-all duration-500 hover:scale-105 hover:bg-blue-300 shadow-xl dark:bg-slate-700 dark:border-slate-700 dark:hover:bg-slate-100  text-slate-800 dark:text-slate-300 dark:hover:text-slate-800"
+        >
+          {/* Image Section */}
+          <section className="p-2 w-70 md:70 flex justify items-center">
+            <img
+              src={data.url}
+              className="h-full w-full md:h-full md:w-70  rounded-md"
+              alt={`${data.name} ${data.last_seeked} Seeked Img`}
+            />
+          </section>
+          <section className="w-30 md:30 text-center  flex justify items-center">
+            <p
+              onClick={() => removeUnusualSeekedStudent(data)}
+              className="hover:text-red-600 cursor-pointer scale-150 hover:scale-trash transition-transform duration-300"
+            >
+              <RiDeleteBin6Line className="" />
+            </p>
+          </section>
+        </div>
+      ))}
+    </div>
+    
   );
 }
 

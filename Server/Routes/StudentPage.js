@@ -175,7 +175,7 @@ exp.post("/student/postNewRequest", async (req, res) => {
 
       // console.log(requestData.val());
       if (requestData.exists()) {
-        res.status(401).send(true);
+        res.status(401).send("Request in queue");
         console.log("Request in queue");
         return;
       }

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { TiTick } from "react-icons/ti";
+import { RxCross2 } from "react-icons/rx";
 import axios from "axios";
 
 function RequestFetchTabel(props) {
@@ -34,6 +36,7 @@ function RequestFetchTabel(props) {
       // console.log(response.data);
       if (response.data) {
         window.alert("Requested Accepted");
+        window.location.reload();
       }
     } catch (error) {
       console.log("Error in rejecting request", error);
@@ -53,6 +56,7 @@ function RequestFetchTabel(props) {
       // console.log(response.data);
       if (response.data) {
         window.alert("Requested Rejected");
+        window.location.reload();
       }
     } catch (error) {
       console.log("Error in rejecting request", error);
@@ -77,8 +81,8 @@ function RequestFetchTabel(props) {
             <th className="p-0 md:p-2">Status</th>
           ) : (
             <>
-              <th>Accept</th>
-              <th>Reject</th>
+              <th className="p-0 md:p-2">Accept</th>
+              <th className="p-0 md:p-2">Reject</th>
             </>
           )}
         </tr>
@@ -106,8 +110,22 @@ function RequestFetchTabel(props) {
               </td>
             ) : (
               <>
-                <td onClick={() => requestAccept(data.regno, data.date, data.startTime, data.endTime)}>Accept</td>
-                <td onClick={() => requestReject(data.regno, data.date, data.startTime, data.endTime)}>Reject</td>
+                <td
+                  className="p-0 md:p-2 border-gray-400 border-2 text-center relative"
+                  onClick={() => requestAccept(data.regno, data.date, data.startTime, data.endTime)}
+                >
+                  <div className="absolute inset-0 flex items-center justify-center ">
+                    <TiTick className="cursor-pointer md:w-7 md:h-7 text-green-500" />
+                  </div>
+                </td>
+                <td
+                  className="p-0 md:p-2 border-gray-400 border-2 text-center relative"
+                  onClick={() => requestReject(data.regno, data.date, data.startTime, data.endTime)}
+                >
+                  <div className="absolute inset-0 flex items-center justify-center ">
+                    <RxCross2 className=" cursor-pointer md:w-7 md:h-7 text-red-500" />
+                  </div>
+                </td>
               </>
             )}
           </tr>

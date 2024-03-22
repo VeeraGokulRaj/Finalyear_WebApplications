@@ -57,8 +57,10 @@ function StudentPage(props) {
       if (response.data.length === 0) {
         setBooleans(previousData => ({
           ...previousData,
-          isEmpty: !previousData.isEmpty
+          isEmpty: !previousData.isEmpty,
+          recordShow: !previousData.recordShow
         }));
+        // console.log(booleans.recordShow, booleans.isEmpty);
         return;
       }
       setStudentSeekedData(response.data);
@@ -118,6 +120,10 @@ function StudentPage(props) {
       });
       // console.log(response.data);
       // console.log(studentData);
+      if (response.data == "Request in queue") {
+        window.alert("Request in Queue");
+      }
+      console.log(response.data);
       if (response.data) {
         window.alert("Request submitted");
       }
@@ -138,7 +144,8 @@ function StudentPage(props) {
       if (response.data.length === 0) {
         setBooleans(previousData => ({
           ...previousData,
-          requestIsEmpty: !previousData.requestIsEmpty
+          requestIsEmpty: !previousData.requestIsEmpty,
+          requestShow: !previousData.requestShow
         }));
         return;
       }
@@ -156,8 +163,8 @@ function StudentPage(props) {
   const [startTimeFocused, setStartTimeFocused] = useState(false);
   const [endTimeFocused, setEndTimeFocused] = useState(false);
   return (
-    <div>
-      <section className="bg-gradient-to-r from-sky-500 to-blue-400 dark:from-slate-400 dark:to-gray-400 py-4">
+    <div className="relative">
+      <section className="z-10 sticky top-0 bg-gradient-to-r from-sky-500 to-blue-400 dark:from-slate-400 dark:to-gray-400 py-4">
         <h1 className=" text-center pb-1  dark:text-white text-white text-3xl font-semibold">Student Page</h1>
         <section className=" h-0.1  w-24 items-center bg-white mx-auto  " />
       </section>
@@ -216,7 +223,7 @@ function StudentPage(props) {
           </div>
         </div>
       )}
-      {/* Student seekd data image Tabel */}
+      {/* main content  */}
 
       <div className="flex justify-center">
         {/* Buttons */}
@@ -230,7 +237,9 @@ function StudentPage(props) {
           </button>
           <section className="block  md:hidden md:border-gray-300 md:border-b-2 md:pb-2 md:mb-2 ">
             {booleans.isEmpty && (
-              <h2 className="text-xl text-slate-800 font-semibold text-center w-full mt-5 ">No Record Found!!</h2>
+              <h2 className="text-lg md:text-xl text-slate-800 font-semibold text-center w-full mt-2 dark:text-slate-200">
+                No Record Found!!
+              </h2>
             )}
             {booleans.recordShow && <RecordsFetchTabel data={studentSeekedData} />}
           </section>
@@ -392,7 +401,11 @@ function StudentPage(props) {
             Request Status
           </button>
           <section className="block pt-2 md:hidden border-gray-300 border-b-2 ">
-            {booleans.requestIsEmpty && <h2>No RecordFound!!</h2>}
+            {booleans.requestIsEmpty && (
+              <h2 className="text-lg md:text-xl text-slate-800 font-semibold text-center w-full mt-2 dark:text-slate-200">
+                No Record Found!!
+              </h2>
+            )}
             {booleans.requestShow && <RequestFetchTabel data={studentRequestData} id={studentId} />}
           </section>
         </div>
@@ -400,17 +413,32 @@ function StudentPage(props) {
         {/* Selected data */}
         <div className="hidden  md:flex flex-col justify-items-center items-center w-85">
           {/* Seeked data */}
-          <section className="border-gray-300 border-b-2 pb-2 mb-2 ">
-            {booleans.isEmpty && (
-              <h2 className="text-xl text-slate-800 font-semibold text-center w-full mt-5 ">No Record Found!!</h2>
-            )}
-            {booleans.recordShow && <RecordsFetchTabel data={studentSeekedData} />}
+          <section>
+            {booleans.recordShow ? (
+              booleans.isEmpty ? (
+                <>
+                  <h1 className="text-center py-3 mb-4 border-b border-gray-300 dark:text-white text-blue-500 text-2xl font-semibold">
+                    Seeked History
+                  </h1>
+                  <h2 className="text-xl text-slate-800 font-semibold text-center w-full mt-5 dark:text-slate-200">
+                    No Record Found!!
+                  </h2>
+                </>
+              ) : (
+                <>
+                  <h1 className="text-center py-3 mb-4 border-b border-gray-300 dark:text-white text-blue-500 text-2xl font-semibold">
+                    Seeked History
+                  </h1>
+                  <RecordsFetchTabel data={studentSeekedData} />
+                </>
+              )
+            ) : null}
           </section>
           {/* Request form */}
-          <section className="border-gray-300 border-b-2 pb-2 mb-2 flex flex-col justify-items-center items-center ">
+          <section className={`flex flex-col justify-items-center items-center `}>
             {booleans.showRequestForm && (
-              <form className="w-full md:w-200">
-                <h1 className="text-center pb-5 mb-4 border-b border-gray-300 dark:text-white text-blue-500 text-2xl font-semibold">
+              <form className="w-full md:w-200 ">
+                <h1 className="text-center my-3 mb-4 border-t border-gray-300 dark:text-white text-blue-500 text-2xl font-semibold pt-2">
                   Request Form
                 </h1>
                 <div
@@ -551,71 +579,35 @@ function StudentPage(props) {
             )}
           </section>
           {/* request fetch tabel */}
-          <section className="border-gray-300 border-b-2 ">
-            {booleans.requestIsEmpty && <h2>No RecordFound!!</h2>}
-            {booleans.requestShow && <RequestFetchTabel data={studentRequestData} id={studentId} />}
+          <section>
+            {booleans.requestShow ? (
+              booleans.requestIsEmpty ? (
+                <>
+                  <h1 className="text-center my-3 mb-4 border-t border-gray-300 dark:text-white text-blue-500 text-2xl font-semibold pt-2">
+                    Request Status
+                  </h1>
+                  <h2 className="text-xl text-slate-800 font-semibold text-center w-full mt-5 dark:text-slate-200">
+                    No Record Found!!
+                  </h2>
+                </>
+              ) : (
+                <>
+                  <h1 className="text-center my-3 mb-4 border-t border-gray-300 dark:text-white text-blue-500 text-2xl font-semibold pt-2">
+                    Request Status
+                  </h1>
+                  <RequestFetchTabel data={studentRequestData} id={studentId} />
+                </>
+              )
+            ) : null}
+            {/* {booleans.requestIsEmpty && (
+              <h2 className="text-xl text-slate-800 font-semibold text-center w-full mt-5 dark:text-slate-200">
+                No Record Found!!
+              </h2>
+            )}
+            {booleans.requestShow && <RequestFetchTabel data={studentRequestData} id={studentId} />} */}
           </section>
         </div>
       </div>
-
-      {/* <section>
-        <button onClick={getStudentSeekedRecord}>Seeked History</button>
-        {booleans.isEmpty && <h2>No Record Found!!</h2>}
-        {booleans.recordShow && <RecordsFetchTabel data={studentSeekedData} />}
-      </section> */}
-      {/* Request part */}
-      {/* <section>
-        <button onClick={viewRequestForm}>Request</button>
-        {booleans.showRequestForm && (
-          <form className="request-form">
-            <input
-              type="text"
-              placeholder="Regno"
-              required
-              name="regno"
-              onChange={handelChange}
-              value={requestFormData.regno}
-            />
-            <br />
-            <textarea
-              name="reason"
-              cols="20"
-              rows="5"
-              placeholder="Reason"
-              required
-              onChange={handelChange}
-              value={requestFormData.reason}
-            />
-            <br />
-            <input
-              type="time"
-              placeholder="Regno"
-              required
-              name="startTime"
-              onChange={handelChange}
-              value={requestFormData.startTime}
-            />
-            <input
-              type="time"
-              placeholder="Regno"
-              required
-              name="endTime"
-              onChange={handelChange}
-              value={requestFormData.endTime}
-            />
-            <br />
-            <input type="checkbox" checked={requestFormData.checked} onChange={handelChange} name="checked" />
-            <br />
-            <button onClick={postNewRequest}>Submit</button>
-          </form>
-        )}
-      </section> */}
-      {/* request fetch tabel */}
-      {/* <section>
-        <button onClick={getStudentRequestRecord}>Check status</button>
-        {booleans.requestIsEmpty && <h2>No RecordFound!!</h2>}
-        {booleans.requestShow && <RequestFetchTabel data={studentRequestData} id={studentId} />}
-      </section> */}
     </div>
   );
 }
