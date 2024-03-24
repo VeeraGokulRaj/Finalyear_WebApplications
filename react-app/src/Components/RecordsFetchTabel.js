@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 function StudentRecordTable(props) {
   const [booleans, setBooleans] = useState({
@@ -25,6 +26,7 @@ function StudentRecordTable(props) {
       if (response.data) {
         window.alert("Data Removed");
       }
+      window.location.reload();
     } catch (error) {
       console.log("Error in removing the student");
     }
@@ -69,6 +71,14 @@ function StudentRecordTable(props) {
               <p className="">{data.last_seeked}</p>
             </div>
           </section>
+          {booleans.hodId && (
+            <section className="flex items-center w-min">
+              <RiDeleteBin6Line
+                className="hover:text-red-600 cursor-pointer scale-150 hover:scale-trash transition-transform duration-300"
+                onClick={() => removeStudent(data)}
+              />
+            </section>
+          )}
         </div>
       ))}
     </div>
@@ -99,7 +109,5 @@ function StudentRecordTable(props) {
     // </table>
   );
 }
-
-
 
 export default StudentRecordTable;

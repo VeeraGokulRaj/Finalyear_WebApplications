@@ -60,8 +60,8 @@ function App() {
 
         <Routes>
           <Route path="/" element={<LoginPage theme={theme} />} />
-          <Route path="/hod" element={<HodPage />} />
-          <Route path="/principal" element={<PrincipalPage />} />
+          <Route path="/hod" element={<HodPage theme={theme} />} />
+          <Route path="/principal" element={<PrincipalPage theme={theme} />} />
           <Route path="/faculty" element={<FacultyPage />} />
           <Route path="/student" element={<StudentPage theme={theme} />} />
         </Routes>

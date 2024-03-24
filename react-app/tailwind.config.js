@@ -27,11 +27,13 @@ module.exports = {
         "30": "30%",
         "70": "70%",
         "27": "27%",
+        min: "7%"
       },
       fontSize: {
         basePlus: "1.15rem",
         extraSmall: "0.5rem",
-        extraSmallPlus: "0.65rem"
+        extraSmallPlus: "0.65rem",
+        extraSmallMid: "0.66rem"
       },
       fontWeight: {
         buttons: "450"
@@ -40,9 +42,10 @@ module.exports = {
         btr: "10px", // border-top-right-radius: 10px
         bbl: "10px" // border-bottom-left-radius: 10px
       },
-      scale: {// Custom scale for flipping elements
-        'trash': '2',
-      },
+      scale: {
+        // Custom scale for flipping elements
+        trash: "2"
+      }
     }
   },
   plugins: []
