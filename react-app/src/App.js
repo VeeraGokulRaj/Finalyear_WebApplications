@@ -39,6 +39,7 @@ function App() {
     setTheme(theme === "dark" ? "light" : "dark");
     // console.log(theme);
   }
+  const path = window.location.pathname;
   return (
     <div className="App w-4/5 mx-auto shadow-x relative bg-white dark:bg-slate-800 ">
       <Router className="mb-0 pb-0">
@@ -65,8 +66,8 @@ function App() {
           <Route path="/faculty" element={<FacultyPage />} />
           <Route path="/student" element={<StudentPage theme={theme} />} />
         </Routes>
+        <Footer />
       </Router>
-      {window.location.pathname !== "/" && <Footer />}
     </div>
   );
 }
