@@ -1,5 +1,5 @@
 // import "./App.css";
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginPage from "./Components/LoginPage";
 import HodPage from "./Components/HodPage";
 import PrincipalPage from "./Components/PrincipalPage";
@@ -8,7 +8,7 @@ import StudentPage from "./Components/StudentPage";
 import React, { useState, useEffect } from "react";
 import { BsBrightnessHigh } from "react-icons/bs";
 import { IoMoon } from "react-icons/io5";
-// import Theme from "./Components/Theme";
+import Footer from "./Components/Footer";
 
 function App() {
   const [theme, setTheme] = useState(null);
@@ -41,7 +41,7 @@ function App() {
   }
   return (
     <div className="App w-4/5 mx-auto shadow-x relative bg-white dark:bg-slate-800 ">
-      <Router>
+      <Router className="mb-0 pb-0">
         {/* <Theme /> */}
         <div className="z-20 sticky top-0">
           <section className="absolute top-0 right-1 sm:top-2 sm:right-4 md:top-4 md:right-7 ">
@@ -66,6 +66,7 @@ function App() {
           <Route path="/student" element={<StudentPage theme={theme} />} />
         </Routes>
       </Router>
+      {window.location.pathname !== "/" && <Footer />}
     </div>
   );
 }
